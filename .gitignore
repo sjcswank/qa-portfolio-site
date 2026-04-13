@@ -4,6 +4,7 @@
 .env.*.local
 planning/
 .claude/
+CLAUDE.md
 
 # Logs
 logs

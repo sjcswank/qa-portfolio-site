@@ -1,10 +1,10 @@
-import { Target, Lightbulb, CheckCircle, Code, Wrench, Mail } from 'lucide-react';
+import { Home, User, Heart, Mail } from 'lucide-react';
 
 export const sections = [
-  { id: 'hero', color: '#EF4444', name: 'Home', icon: Target },
-  { id: 'philosophy', color: '#F97316', name: 'Philosophy', icon: Lightbulb },
-  { id: 'process', color: '#EAB308', name: 'Process', icon: CheckCircle },
-  { id: 'case-studies', color: '#22C55E', name: 'Case Studies', icon: Code },
-  { id: 'tools', color: '#3B82F6', name: 'Tools', icon: Wrench },
-  { id: 'contact', color: '#7842f5', name: 'Contact', icon: Mail },
+  { id: 'hero',       color: '#8347D9', name: 'Home',    icon: Home },
+  { id: 'about',      color: '#C47D16', name: 'About',   icon: User },
+  { id: 'philosophy', color: '#1A7A6E', name: 'Values',  icon: Heart },
+  { id: 'contact',    color: '#E8523A', name: 'Contact', icon: Mail },
+  // Learning section temporarily hidden — add back when ready:
+  // { id: 'learning', color: '#2563CC', name: 'Learning', icon: BookOpen },
 ];

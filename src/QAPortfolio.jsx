@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import { ChevronUp } from 'lucide-react';
+import { ChevronUp, Menu, X } from 'lucide-react';
 import { sections } from './data/sections';
-import HeroSection from './sections/HeroSection';
+
+// SWAP HERO COMPONENT HERE — uncomment the variant you want active
+// import HeroWithoutPhoto from './sections/HeroWithoutPhoto';
+import HeroWithPhoto from './sections/HeroWithPhoto';
+
+import AboutSection from './sections/AboutSection';
 import PhilosophySection from './sections/PhilosophySection';
-import ProcessSection from './sections/ProcessSection';
-import CaseStudiesSection from './sections/CaseStudiesSection';
-import ToolsSection from './sections/ToolsSection';
+// import LearningSection from './sections/LearningSection'; // temporarily hidden
 import ContactSection from './sections/ContactSection';
 
 const QAPortfolio = () => {
@@ -14,11 +17,13 @@ const QAPortfolio = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [shouldBounce, setShouldBounce] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const sectionsRef = useRef([]);
   const bounceTimeoutRef = useRef(null);
+  const navRef = useRef(null);
 
   useEffect(() => {
-    document.title = "Heather Frank - QA Engineer";
+    document.title = "Heather Frank - Ethical AI Practitioner";
 
     let metaDescription = document.querySelector('meta[name="description"]');
     if (!metaDescription) {
@@ -26,7 +31,8 @@ const QAPortfolio = () => {
       metaDescription.name = 'description';
       document.head.appendChild(metaDescription);
     }
-    metaDescription.content = "Quality Assurance Engineer specializing in custom test automation frameworks, ethical testing practices, and building software that improves the human experience.";
+    // TODO: replace placeholder meta description
+    metaDescription.content = "[PLACEHOLDER: meta description — 1-2 sentences for search results and link previews]";
   }, []);
 
   useEffect(() => {
@@ -35,6 +41,26 @@ const QAPortfolio = () => {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Close mobile menu on Escape key or click outside
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+    const handleClickOutside = (e) => {
+      if (isMenuOpen && navRef.current && !navRef.current.contains(e.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   const triggerBounce = () => {
     setShouldBounce(true);
@@ -53,6 +79,7 @@ const QAPortfolio = () => {
 
       setShowScrollTop(scrollPosition > 300);
       triggerBounce();
+      setIsMenuOpen(false);
 
       sectionsRef.current.forEach((section, index) => {
         if (section) {
@@ -113,19 +140,21 @@ const QAPortfolio = () => {
       <div style={edgeGlowStyle} />
 
       {/* Top Navigation */}
-      <nav className="fixed top-0 left-0 right-0 bg-gray-900/95 backdrop-blur-sm z-50 border-b border-gray-800">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <nav ref={navRef} className="fixed top-0 left-0 right-0 bg-gray-900/95 backdrop-blur-sm z-50 border-b border-gray-800">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex justify-between items-center">
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
               scrollToSection(0);
             }}
-            className="text-xl font-bold hover:opacity-80 transition-opacity"
+            className="text-xl font-bold hover:opacity-80 transition-opacity whitespace-nowrap"
           >
             Heather Frank
           </a>
-          <div className="flex gap-8 items-center">
+
+          {/* Desktop Nav Links - hidden on mobile */}
+          <div className="hidden md:flex gap-8 items-center">
             {sections.map((section, index) => (
               <a
                 key={section.id}
@@ -157,11 +186,50 @@ const QAPortfolio = () => {
               </a>
             ))}
           </div>
+
+          {/* Hamburger Button - visible on mobile */}
+          <button
+            className="md:hidden p-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white rounded"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {/* Mobile Menu Dropdown */}
+        <div
+          id="mobile-menu"
+          className={`md:hidden absolute top-16 left-0 right-0 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 transition-all duration-300 ${
+            isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+          }`}
+        >
+          <div className="px-6 py-4 flex flex-col gap-4">
+            {sections.map((section, index) => (
+              <a
+                key={section.id}
+                href={`#${section.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(index);
+                  setIsMenuOpen(false);
+                }}
+                className="text-base py-2 transition-colors"
+                style={{
+                  color: activeSection === index ? section.color : '#9CA3AF'
+                }}
+              >
+                {section.name}
+              </a>
+            ))}
+          </div>
         </div>
       </nav>
 
-      {/* Side Navigation Dots */}
-      <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-4">
+      {/* Side Navigation Dots - hidden on mobile */}
+      <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 flex-col gap-4 hidden md:flex">
         {sections.map((section, index) => {
           const Icon = section.icon;
           return (
@@ -206,41 +274,37 @@ const QAPortfolio = () => {
       </div>
 
       {/* Sections */}
-      <HeroSection
+      {/* SWAP HERO COMPONENT HERE — change HeroWithoutPhoto to HeroWithPhoto (or vice versa) */}
+      <HeroWithPhoto
         ref={el => sectionsRef.current[0] = el}
         isVisible={visibleSections.has(0)}
         color={sections[0].color}
         scrollToSection={scrollToSection}
       />
 
-      <PhilosophySection
+      <AboutSection
         ref={el => sectionsRef.current[1] = el}
         isVisible={visibleSections.has(1)}
         color={sections[1].color}
       />
 
-      <ProcessSection
+      <PhilosophySection
         ref={el => sectionsRef.current[2] = el}
         isVisible={visibleSections.has(2)}
         color={sections[2].color}
       />
 
-      <CaseStudiesSection
+      {/* LearningSection temporarily hidden — restore when ready:
+      <LearningSection
         ref={el => sectionsRef.current[3] = el}
         isVisible={visibleSections.has(3)}
         color={sections[3].color}
-      />
-
-      <ToolsSection
-        ref={el => sectionsRef.current[4] = el}
-        isVisible={visibleSections.has(4)}
-        color={sections[4].color}
-      />
+      /> */}
 
       <ContactSection
-        ref={el => sectionsRef.current[5] = el}
-        isVisible={visibleSections.has(5)}
-        color={sections[5].color}
+        ref={el => sectionsRef.current[3] = el}
+        isVisible={visibleSections.has(3)}
+        color={sections[3].color}
       />
 
       {/* Scroll to Top Button */}
@@ -261,9 +325,9 @@ const QAPortfolio = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 border-t border-gray-800 py-8 pb-16 md:pb-24 text-center text-gray-400 text-xs md:text-sm">
+      <footer className="bg-gray-900 border-t border-gray-800 py-8 pb-24 text-center text-gray-400 text-xs md:text-sm">
         <p className="mb-2">&copy; {new Date().getFullYear()} Heather Frank. All rights reserved.</p>
-        <p>Last Updated: January 2025</p>
+        <p>Last Updated: April 2026</p>
       </footer>
     </div>
   );
