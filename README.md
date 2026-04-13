@@ -1,166 +1,78 @@
-# Heather Frank - QA Portfolio Site
+# Heather Frank — Personal Site
 
-A professional portfolio website showcasing quality assurance expertise, testing philosophy, and project case studies.
+Personal portfolio site for Heather Frank, Ethical AI Practitioner.  
+Live at: **https://sjcswank.github.io/me/**
 
-## About This Project
-
-This portfolio demonstrates my approach to quality assurance engineering—one that puts people first. As a QA professional, I believe that testing isn't just about finding bugs; it's about ensuring technology genuinely improves the human experience.
-
-The site features:
-- **My Testing Philosophy** - Ethical, human-centered QA principles
-- **The Method** - A 5-step process for comprehensive quality assurance
-- **Case Studies** - Real-world examples of testing frameworks and automation
-- **Toolkit** - Technologies and patterns I use to deliver quality
+Built with React + Vite + Tailwind CSS. Deployed via GitHub Pages.
 
 ---
 
-## Tech Stack
-
-- **React 19** - UI framework
-- **Vite** - Build tool and development server
-- **Tailwind CSS** - Utility-first styling
-- **Lucide React** - Icon library
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- npm or yarn
-
-### Installation
+## Running locally
 
 ```bash
-# Clone the repository
-git clone https://github.com/sjcswank/qa-portfolio-site.git
-cd qa-portfolio-site
-
-# Install dependencies
 npm install
-
-# Start development server
-npm run dev
+npm run dev       # http://localhost:5173
+npm run build     # production build → dist/
+npm run preview   # preview the production build locally
+npm run lint      # run ESLint
 ```
 
-The site will be available at `http://localhost:5173`
+---
 
-### Available Scripts
+## Common updates
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server with hot reload |
-| `npm run build` | Build for production (outputs to `dist/`) |
-| `npm run preview` | Preview production build locally |
-| `npm run lint` | Run ESLint to check for code issues |
+### Swap the hero layout (photo vs. no photo)
+In [src/QAPortfolio.jsx](src/QAPortfolio.jsx), find the comment `// SWAP HERO COMPONENT HERE` and toggle which import is active:
 
-## Project Structure
-
-```
-qa-portfolio-site/
-├── public/
-│   ├── favicon-logo.svg
-│   ├── og-image.png                              # Social media preview image
-│   └── Heather_Frank_Automation_Engineer_Resume.pdf
-├── src/
-│   ├── components/                               # Reusable UI components
-│   │   ├── CaseStudyCard.jsx
-│   │   ├── HoverButton.jsx
-│   │   ├── PhilosophyCard.jsx
-│   │   ├── Section.jsx
-│   │   ├── SocialLink.jsx
-│   │   ├── TechTag.jsx
-│   │   └── ToolCard.jsx
-│   ├── sections/                                 # Page sections
-│   │   ├── HeroSection.jsx
-│   │   ├── PhilosophySection.jsx
-│   │   ├── ProcessSection.jsx
-│   │   ├── CaseStudiesSection.jsx
-│   │   ├── ToolsSection.jsx
-│   │   └── ContactSection.jsx
-│   ├── data/                                     # Content data files
-│   │   ├── sections.js                           # Section metadata & colors
-│   │   ├── caseStudies.js
-│   │   ├── processSteps.js
-│   │   ├── tools.js
-│   │   └── philosophyPillars.js
-│   ├── QAPortfolio.jsx                           # Main portfolio component
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css                                 # Tailwind imports
-├── index.html
-├── tailwind.config.js
-├── vite.config.js
-├── eslint.config.js
-└── package.json
+```js
+// SWAP HERO COMPONENT HERE — uncomment the variant you want active
+import HeroWithoutPhoto from './sections/HeroWithoutPhoto';
+// import HeroWithPhoto from './sections/HeroWithPhoto';
 ```
 
-## Features
+Then find the matching `// SWAP HERO COMPONENT HERE` comment in the JSX render block and swap the component name there too.
 
-### Interactive Navigation
-- Smooth scroll navigation between sections
-- Fixed top navbar with active section highlighting
-- Side dot navigation with section indicators
-- Scroll-to-top button
+### Update the headshot
+Drop a new file into `public/headshot.jpg`. The `HeroWithPhoto` component references it at `/headshot.jpg` — no code changes needed.
 
-### Visual Design
-- Dynamic color theming that changes with each section
-- Animated edge glow effect
-- Fade-in animations as sections come into view
-- Hover effects on buttons, cards, and navigation elements
+### Update About, Values, or Contact copy
+Content lives directly in the section components:
+- [src/sections/AboutSection.jsx](src/sections/AboutSection.jsx)
+- [src/sections/PhilosophySection.jsx](src/sections/PhilosophySection.jsx) + [src/data/philosophyPillars.js](src/data/philosophyPillars.js)
+- [src/sections/ContactSection.jsx](src/sections/ContactSection.jsx)
 
-### Accessibility
-- Skip-to-main-content link for screen readers
-- ARIA labels on interactive elements
-- Keyboard navigation support
-- Visible focus indicators
-- Semantic HTML structure
+### Restore or update the Learning in Public section
+The section is built but temporarily hidden. To bring it back:
 
-### Responsive Design
-- Mobile-first approach
-- Stacked layouts on small screens
-- Adjusted typography and spacing for different breakpoints
+1. In [src/data/sections.js](src/data/sections.js), uncomment the `learning` entry
+2. In [src/QAPortfolio.jsx](src/QAPortfolio.jsx), uncomment the `LearningSection` import and render block, and update the `ContactSection` ref index from `[3]` back to `[4]`
+3. In both Hero components, change `scrollToSection(3)` back to `scrollToSection(4)`
+4. Update content in [src/data/learningMilestones.js](src/data/learningMilestones.js)
 
-## Customization
+To add a new learning milestone later, add a new entry object to [src/data/learningMilestones.js](src/data/learningMilestones.js) — the section renders them automatically.
 
-### Updating Content
+---
 
-Content is separated from components for easy updates:
+## Tech stack
 
-- **Case Studies**: Edit `src/data/caseStudies.js`
-- **Process Steps**: Edit `src/data/processSteps.js`
-- **Tools & Skills**: Edit `src/data/tools.js`
-- **Philosophy Cards**: Edit `src/data/philosophyPillars.js`
-- **Section Colors**: Edit `src/data/sections.js`
+| | |
+|---|---|
+| Framework | React 19 |
+| Build tool | Vite |
+| Styling | Tailwind CSS |
+| Fonts | Bebas Neue (headings), DM Sans (body) via Google Fonts |
+| Icons | lucide-react |
+| Deployment | GitHub Pages |
 
-### Changing Colors
-
-Each section has a unique color defined in `src/data/sections.js`:
-
-```javascript
-const sections = [
-  { id: 'hero', color: '#EF4444', name: 'Home', icon: Target },
-  { id: 'philosophy', color: '#F97316', name: 'Philosophy', icon: Lightbulb },
-  // ... etc
-];
-```
+---
 
 ## Deployment
 
-Build the production bundle:
+Pushes to `main` trigger the GitHub Pages deployment workflow automatically.  
+The Vite base path is set to `/me/` in [vite.config.js](vite.config.js) to match the repo name.  
+If the repo is ever renamed, update `base` in `vite.config.js` to match.
 
-```bash
-npm run build
-```
-
-The `dist/` folder can be deployed to any static hosting service:
-- Vercel
-- Netlify
-- GitHub Pages
-- AWS S3 + CloudFront
-
-## License
-
-This project is for personal portfolio use.
+---
 
 ## Contact
 
