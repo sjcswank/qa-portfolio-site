@@ -21,7 +21,7 @@ const HeroWithPhoto = forwardRef(({
           {/* Recommended: round crop, min 400×400px, neutral or outdoor background */}
           <div className="flex-shrink-0">
             <img
-              src="/headshot.jpg"
+              src="./headshot.jpg"
               alt="Heather Frank"
               className="w-48 h-48 md:w-56 md:h-56 rounded-full object-cover"
             />
