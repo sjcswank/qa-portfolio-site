@@ -30,7 +30,7 @@ const HeroWithPhoto = forwardRef(({
 
           <div className="text-center md:text-left flex-grow">
             <p className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-4">
-              Ethical AI Practitioner
+              Civic Technologist
             </p>
 
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
@@ -41,7 +41,7 @@ const HeroWithPhoto = forwardRef(({
               className="text-xl md:text-2xl text-gray-400 mb-10"
               style={{ lineHeight: '1.8' }}
             >
-              Designing for people, not users.
+              Building for people, not users.
             </p>
 
             <HoverButton
